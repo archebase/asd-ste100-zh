@@ -1,0 +1,7 @@
+interface:
+  display_name: "ASD-STE100 简化技术中文"
+  short_description: "把中文写成或改写成机器可无歧义解析的形式"
+  default_prompt: "把下面这段中文改写为无歧义的简化技术中文:"
+
+policy:
+  allow_implicit_invocation: true
