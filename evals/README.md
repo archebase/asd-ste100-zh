@@ -1,0 +1,69 @@
+# 评测(Evals)
+
+三层评测,回答三个不同的问题:
+
+| 层 | 问题 | 工具 | 模型 |
+|---|---|---|---|
+| 1. linter 召回/清洁 | 规则检查器本身对不对 | `run_eval.py` | 无 |
+| 2. 金标属性 | 技能产出的"正确答案"自身是否守规矩 | `run_eval.py` | 无 |
+| 3. 模型在环 | 真实模型拿 SKILL.md 当指令时改写质量如何 | `run_bench.py` | completion + judge |
+
+## 第 1+2 层:离线确定性评测
+
+```bash
+python3 evals/run_eval.py         # 人读输出
+python3 evals/run_eval.py --json  # 结构化
+```
+
+语料 `corpus.jsonl`,三种条目:
+
+- **positive**(14 条):含标注违规规则的文本。断言每条标注规则至少命中一次 → 召回率。
+- **negative**(8 条):合规文本(含受保护 hedging"可能已失败"、防误报词"显示器")。断言零发现 → 负例清洁度。
+- **pair**(9 条):金标前后对 + hedging 标注。三项属性:
+  - `expect_hard`:金标改写后的硬性违规数必须等于期望(默认 0)——改写自身要过 linter;
+  - hedging 保留:`hedges_before` 的每个 hedge 在改写后必须有同族表达(`HEDGE_FAMILY` 允许形态变化,如"可能发生了"→"可能已失败");`hedges_after` 列出的必须在场(防无中生有的强断言);
+  - 字数变化仅记录不判分——SKILL 明确目标是消除歧义而非压缩,精确性优先。
+
+当前结果:**召回 14/14,清洁 8/8,金标属性 9/9,exit 0。**
+
+这套评测已抓到过一个真 bug:切句正则沿用了英文版"句末标点+空白"的分隔,中文句号后无空格,整段多句被当成长句误报(`pair-01..04/10` 全挂)。修复为纯零宽断言后转绿。
+
+## 第 3 层:模型在环 benchmark
+
+`run_bench.py` 在 eval kernel 中运行(需要 `completion`/`judge`):
+
+```python
+%load evals/run_bench.py
+await run()
+```
+
+流程:SKILL.md 全文作 system prompt → 对 9 条 pair 的 before 各生成一次改写 → `judge_batch` 对每条 {before, rewrite} 评三个布尔维度:
+
+- **meaning**:是否精确保留全部事实、条件、数字与范围限定,无添加无丢失;
+- **hedge**:hedging 强度是否保留(可换形态,不可升级为断言);
+- **format**:是否只输出改写文本(无前言/模式宣告/变更摘要;单行`保留原文:`是唯一允许例外)。
+
+报告落盘 `bench-report.json`。
+
+### 基线(2026-10,default 模型,glm-5.3 判分)
+
+| 维度 | 首轮 | 次轮 |
+|---|---|---|
+| meaning | 3/9 | 4/9 |
+| hedge | 6/9 | 5/9 |
+| format | 7/9 | 5/9 |
+| 三项全过 | 2/9 | 3/9 |
+
+两轮数字有波动(同模型同 rubric)——judge 噪声真实存在,基线当区间看,不当点值。但两轮稳定复现的**失败模式**是可信的技能缺陷信号:
+
+1. **`保留原文:` 膨胀**:SKILL 允许单行,模型写成多行解释段(format 失败主因);
+2. **限定词丢失**:"摩擦极小""有时""逐步"在压缩中被丢(meaning 失败主因)——正是 SKILL"流程"一节警告的头号翻车方式;
+3. **结构发明**:把"特定错误码/另一错误码"改写成"错误码 A/B",引入原文没有的标签。
+
+改进 SKILL.md 指令后重跑 `await run()` 即可对比。判分主体换更稳的模型(`judge` 凭据配置)可压噪声。
+
+## 维护约定
+
+- 修 linter 或规则映射 → 跑 `run_eval.py`(必须 exit 0)+ `ste-lint-zh.py --selftest`;
+- 改 SKILL.md → 重跑 benchmark 对比基线;
+- 新增语料条目必须手工标注 `rules`/`hedges_before`/`hedges_after`,标注错误会直接污染第 1+2 层结论。

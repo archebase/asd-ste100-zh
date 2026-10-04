@@ -1,0 +1,31 @@
+{"id": "semi-01", "kind": "positive", "text": "面板被移除;拉起任务。", "rules": ["passive-voice", "semicolon", "phrasal-verb"]}
+{"id": "nomz-01", "kind": "positive", "text": "对日志进行一次分析。", "rules": ["nominalization"]}
+{"id": "mkt-01", "kind": "positive", "text": "提供无缝且强大的一站式体验。", "rules": ["marketing-adjective"]}
+{"id": "dc-01", "kind": "positive", "text": "我们已经收到了总部的技术报告。", "rules": ["double-completion"]}
+{"id": "long-01", "kind": "positive", "text": "该函数首先验证输入参数的完整性与类型合法性,然后依次调用下游多个服务接口,最后将全部结果聚合为一份报告写入存储。", "rules": ["long-sentence"]}
+{"id": "rot-01", "kind": "positive", "text": "先检查配置文件,再核对输出结果,最后校验一次哈希。", "rules": ["synonym-rotation"]}
+{"id": "dang-01", "kind": "positive", "text": "- 设置目标,并\n- 记录结果或", "rules": ["dangling-conjunction"]}
+{"id": "semi-02", "kind": "positive", "text": "打开文件;读取第三行。", "rules": ["semicolon"]}
+{"id": "nomz-02", "kind": "positive", "text": "对系统开展全面排查。", "rules": ["nominalization"]}
+{"id": "dc-02", "kind": "positive", "text": "任务已经完成了。", "rules": ["double-completion"]}
+{"id": "long-02", "kind": "positive", "text": "当代理收到上游事件时它需要先解析载荷再校验签名然后决定是否转发该事件给下游消费者这期间任何一步失败都要求写日志并返回错误码", "rules": ["long-sentence"]}
+{"id": "rot-02", "kind": "positive", "text": "删除临时文件,随后移除归档。", "rules": ["synonym-rotation"]}
+{"id": "pv-01", "kind": "positive", "text": "该补丁已被合并。", "rules": ["passive-voice"]}
+{"id": "pv-02", "kind": "positive", "text": "备份受到损坏。", "rules": ["passive-voice"]}
+{"id": "clean-01", "kind": "negative", "text": "代理删除文件。检查配置。任务完成。"}
+{"id": "clean-02", "kind": "negative", "text": "请求可能已失败。原因可能是超时。磁盘可能已写满。"}
+{"id": "clean-03", "kind": "negative", "text": "检查配置。检查输出。"}
+{"id": "clean-04", "kind": "negative", "text": "连接显示器后展示结果。"}
+{"id": "clean-05", "kind": "negative", "text": "已完成。启动任务。停止服务。"}
+{"id": "clean-06", "kind": "negative", "text": "打开文件。读取第三行。检查是否匹配。"}
+{"id": "clean-07", "kind": "negative", "text": "使用屏幕阅读器时,朗读顺序为从左到右。"}
+{"id": "clean-08", "kind": "negative", "text": "工具尝试同步状态。发现冲突时读取策略。策略允许则解决,否则呈报。"}
+{"id": "pair-01", "kind": "pair", "before": "处理您的请求时可能发生了错误,原因或许是预期数据格式存在潜在不匹配,而这可能由过期的客户端版本所导致。", "after": "你的请求可能已失败。原因可能是数据格式与服务器期望的不匹配。过期的客户端会导致该不匹配。请检查客户端版本。", "expect_hard": 0, "hedges_before": ["可能发生了", "或许", "可能由"], "hedges_after": ["可能已失败", "可能是", "会导致"]}
+{"id": "pair-02", "kind": "pair", "before": "一旦上游任务已经完成并且假定未抛出任何错误,下游代理应当继续消费输出产物,尽管值得指出的是超时条件下有时会产生部分产物。", "after": "等待上游任务完成且无错误。然后读取输出产物。警告:超时可能产生不完整的产物。使用前检查产物是否完整。", "expect_hard": 0, "hedges_before": ["已经完成", "有时", "值得指出"], "hedges_after": ["可能产生"]}
+{"id": "pair-03", "kind": "pair", "before": "本工具将尝试在已被配置的各个后端之间同步状态,若检测到冲突,则可能会依据当前所设置的策略自动加以解决,否则会将该冲突呈报以供人工审查。", "after": "本工具尝试同步各后端之间的状态。各后端均已配置。若发现冲突,工具读取已配置的策略。若策略允许自动解决,工具可以不经用户解决冲突。若工具未解决冲突,则呈报该冲突,供人工审查。", "expect_hard": 0, "hedges_before": ["将尝试", "可能会"], "hedges_after": ["尝试", "可以"]}
+{"id": "pair-04", "kind": "pair", "before": "我们的缓存层旨在无缝融入您现有的技术栈,摩擦极小且无厂商锁定;它利用语义相似度来大幅减少传统上困扰大模型工作负载的缓存未命中。", "after": "普通缓存按精确文本匹配请求,措辞的小变化就会导致缓存未命中。本缓存把新提示的语义与已存提示比较。它可与现有技术栈并行运行,不在其外存储数据。", "expect_hard": 0, "hedges_before": ["旨在"], "hedges_after": ["可与"]}
+{"id": "pair-06", "kind": "pair", "before": "服务将会被重启;配置将被重新加载。", "after": "重启服务。重新加载配置。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}
+{"id": "pair-07", "kind": "pair", "before": "请对本次事故予以彻查并对责任人予以追责。", "after": "请彻查本次事故,并追责责任人。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}
+{"id": "pair-08", "kind": "pair", "before": "系统或将在完成灰度后逐步放开全量,并为高优先级租户提供极致体验。", "after": "系统或于灰度完成后逐步放开全量。高优先级租户或获得更快响应。", "expect_hard": 0, "hedges_before": ["或将"], "hedges_after": ["或于", "或获得"]}
+{"id": "pair-09", "kind": "pair", "before": "若磁盘已满则写入会失败,此时应当清理空间并重试,同时注意保留最近七天的日志以便审计。", "after": "磁盘满时写入失败。先清理空间再重试。保留最近七天的日志供审计。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}
+{"id": "pair-10", "kind": "pair", "before": "该接口用于查询订单状态;若订单不存在则返回特定错误码;若权限不足则返回另一错误码;调用方应分别处理两种情况。", "after": "该接口查询订单状态。订单不存在时返回错误码 A。权限不足时返回错误码 B。调用方分别处理两种情况。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}

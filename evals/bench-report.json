@@ -1,0 +1,186 @@
+{
+  "summary": {
+    "per_question": {
+      "meaning": {
+        "pass": 4,
+        "total": 9
+      },
+      "hedge": {
+        "pass": 5,
+        "total": 9
+      },
+      "format": {
+        "pass": 5,
+        "total": 9
+      }
+    },
+    "all_three": {
+      "pass": 3,
+      "total": 9
+    }
+  },
+  "results": {
+    "pair-08": {
+      "rewrite": "系统完成灰度后，可能逐步开放给全部用户。\n\n保留原文：“灰度”为领域术语保留，建议加词汇表条目：“灰度：先向小部分用户发布变更，确认无问题后再扩大范围。”\n另：营销形容词“极致体验”已删除——它不含可核查的宣称，改写不会为它编造度量值。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 0
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 1
+        },
+        "format": {
+          "type": "bool",
+          "bool": 0
+        }
+      },
+      "error": null
+    },
+    "pair-07": {
+      "rewrite": "请彻查本次事故。请追责责任人。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 1
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 1
+        },
+        "format": {
+          "type": "bool",
+          "bool": 1
+        }
+      },
+      "error": null
+    },
+    "pair-09": {
+      "rewrite": "若磁盘已满,写入会失败。清理磁盘空间。然后重试写入。保留最近七天的日志,以便审计。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 1
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 1
+        },
+        "format": {
+          "type": "bool",
+          "bool": 1
+        }
+      },
+      "error": null
+    },
+    "pair-06": {
+      "rewrite": "服务将重启。配置将重新加载。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 1
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 1
+        },
+        "format": {
+          "type": "bool",
+          "bool": 1
+        }
+      },
+      "error": null
+    },
+    "pair-01": {
+      "rewrite": "处理您的请求时可能发生了错误。一个可能的原因:数据格式不匹配。数据格式不匹配可能由过期的客户端版本导致。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 0
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 1
+        },
+        "format": {
+          "type": "bool",
+          "bool": 1
+        }
+      },
+      "error": null
+    },
+    "pair-04": {
+      "rewrite": "缓存层兼容现有技术栈。它不要求更换厂商。缓存层用语义相似度匹配请求。这减少了大模型工作负载中的缓存未命中。\n\n保留原文:原文称减少“传统上困扰”工作负载的未命中,暗示历史对比;若该对比对你的读者重要,可恢复为“这减少了传统上困扰大模型工作负载的缓存未命中”。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 0
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 0
+        },
+        "format": {
+          "type": "bool",
+          "bool": 0
+        }
+      },
+      "error": null
+    },
+    "pair-10": {
+      "rewrite": "该接口用于查询订单状态。若订单不存在,接口返回错误码 A。若权限不足,接口返回错误码 B。调用方必须分别处理这两种情况。\n\n保留原文:原文用“特定错误码”和“另一错误码”指代两个错误码,但未给出具体编码。简化不能编造来源没有的编码,故以 A、B 占位——请替换为实际的错误码值。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 1
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 0
+        },
+        "format": {
+          "type": "bool",
+          "bool": 1
+        }
+      },
+      "error": null
+    },
+    "pair-02": {
+      "rewrite": "上游任务完成且未抛出错误后,下游代理继续消费输出产物。超时条件下有时会产生部分产物。\n\n保留原文:“有时”和“假定”——原句对超时后果的限定和不确定性是内容，删掉会改变论断。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 0
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 0
+        },
+        "format": {
+          "type": "bool",
+          "bool": 0
+        }
+      },
+      "error": null
+    },
+    "pair-03": {
+      "rewrite": "本工具在各个后端之间同步状态。各个后端均已配置。若工具检测到冲突，工具可能依据已设置的策略自动解决该冲突。若工具不能自动解决冲突，工具将冲突呈报，供人工审查。\n\n保留原文：“可能”——它声明自动解决不确定发生，删掉会把论断变为确定行为。",
+      "answers": {
+        "meaning": {
+          "type": "bool",
+          "bool": 0
+        },
+        "hedge": {
+          "type": "bool",
+          "bool": 0
+        },
+        "format": {
+          "type": "bool",
+          "bool": 0
+        }
+      },
+      "error": null
+    }
+  }
+}
