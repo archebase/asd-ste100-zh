@@ -89,6 +89,42 @@ ln -s ~/.agents/skills/asd-ste100-zh ~/.claude/skills/asd-ste100-zh   # 若还�
 
 或直接把本目录(含 `SKILL.md`、`references/`、`examples/`、`scripts/`、`evals/`)复制到你所用 harness 的 skills 路径下。
 
+### 设为所有工作区的默认(Codex)
+
+用户级安装只保证 Codex 能发现本技能,不保证 Codex 调用它。要让它成为默认行为,再补两步。
+
+**1. 显式启用。** 写进 `~/.codex/config.toml`,让技能出现在清单里,并阻止其他配置关掉它:
+
+```toml
+[[skills.config]]
+path = "/Users/<you>/.agents/skills/asd-ste100-zh/SKILL.md"
+enabled = true
+```
+
+**2. 全局指针。** 写进 `~/.codex/AGENTS.md`,让模型默认往这条路上走:
+
+```md
+## Chinese text defaults to the asd-ste100-zh skill
+
+When I write Chinese text that another agent, tool, or pipeline must parse with
+no human in the loop, default to the `asd-ste100-zh` skill instead of asking
+first. Does not apply to creative writing, marketing copy, or anything where
+tone and nuance are the point.
+```
+
+改完 `config.toml` 需要重启 Codex。仓库级 `AGENTS.md` 优先级高于全局,团队约定放仓库。
+
+| 机制 | 保证 |
+|---|---|
+| 技能装在用户级路径 | 所有工作区都能发现 |
+| `skills.config.enabled = true` | 技能出现在清单里,保持启用 |
+| 全局或仓库 `AGENTS.md` | 模型默认执行,高概率但不机械 |
+| `scripts/ste-lint-zh.py` 进 pre-commit 或 CI | 确定性 |
+
+想要机械强制,门禁是 linter,不是技能本身。存量文档用 `--baseline N` 容忍既有违规,逐步收敛。
+
+激活范围、优先级和不适用边界见 `SKILL.md` 的「默认激活与边界」一节。
+
 ## 用法
 
 用简化或澄清中文文本的请求触发:
