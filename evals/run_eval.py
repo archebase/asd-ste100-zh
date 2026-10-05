@@ -114,6 +114,18 @@ def eval_pairs(rows):
     return results
 
 
+def eval_semantic_expansions(rows):
+    results = []
+    for row in rows:
+        expected = row["after"]
+        results.append({
+            "id": row["id"],
+            "ok": bool(expected.strip()) and row["before"].strip() != expected.strip(),
+            "checks": row.get("expect", {}),
+        })
+    return results
+
+
 def main():
     as_json = "--json" in sys.argv
     corpus_path = Path(__file__).resolve().parent / "corpus.jsonl"
@@ -123,6 +135,8 @@ def main():
     pos = eval_positives([r for r in rows if r["kind"] == "positive"])
     neg = eval_negatives([r for r in rows if r["kind"] == "negative"])
     pairs = eval_pairs([r for r in rows if r["kind"] == "pair"])
+    semantic = eval_semantic_expansions(
+        [r for r in rows if r["kind"] == "semantic-expansion"])
 
     def summary(items):
         n = len(items)
@@ -134,15 +148,16 @@ def main():
         "positive_recall": summary(pos), "positives": pos,
         "negative_clean": summary(neg), "negatives": neg,
         "pair_properties": summary(pairs), "pairs": pairs,
+        "semantic_expansion": summary(semantic), "semantic": semantic,
     }
     exit_code = 0 if all(summary(x)["pass"] == summary(x)["total"]
-                         for x in (pos, neg, pairs)) else 1
+                         for x in (pos, neg, pairs, semantic)) else 1
 
     if as_json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         for name, items in (("positive(召回)", pos), ("negative(清洁)", neg),
-                            ("pair(属性)", pairs)):
+                            ("pair(属性)", pairs), ("semantic-expansion", semantic)):
             s = summary(items)
             print(f"{name}: {s['pass']}/{s['total']} ({s['rate']}%)")
             for item in items:

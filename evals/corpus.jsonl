@@ -29,3 +29,5 @@
 {"id": "pair-08", "kind": "pair", "before": "系统或将在完成灰度后逐步放开全量,并为高优先级租户提供极致体验。", "after": "系统或于灰度完成后逐步放开全量。高优先级租户或获得更快响应。", "expect_hard": 0, "hedges_before": ["或将"], "hedges_after": ["或于", "或获得"]}
 {"id": "pair-09", "kind": "pair", "before": "若磁盘已满则写入会失败,此时应当清理空间并重试,同时注意保留最近七天的日志以便审计。", "after": "磁盘满时写入失败。先清理空间再重试。保留最近七天的日志供审计。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}
 {"id": "pair-10", "kind": "pair", "before": "该接口用于查询订单状态;若订单不存在则返回特定错误码;若权限不足则返回另一错误码;调用方应分别处理两种情况。", "after": "该接口查询订单状态。订单不存在时返回错误码 A。权限不足时返回错误码 B。调用方分别处理两种情况。", "expect_hard": 0, "hedges_before": [], "hedges_after": []}
+{"id": "scene-01", "kind": "semantic-expansion", "before": "桌子旁边有个箱子,箱子后面有盏灯。", "after": "桌子旁边有一个箱子。箱子后面有一盏灯。具体方向和距离未指定。", "expect": {"preserve_entities": true, "no_invented_direction": true, "reference_explicit": true}}
+{"id": "scene-02", "kind": "semantic-expansion", "before": "画面里有一张桌子和一个箱子,让它看起来更有层次。", "after": "画面里有一张桌子和一个箱子。构图需要呈现层次感。箱子相对于桌子的位置未指定。", "expect": {"preserve_creative_constraint": true, "no_invented_relation": true}}
