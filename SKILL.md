@@ -1,7 +1,10 @@
 ---
 name: asd-ste100-zh
 description: "把中文写成、改写成或展开成可无歧义解析的形式。用于机器、下游代理、制作人员或视觉模型需要执行、渲染或核对的文本：工具与函数描述、schema 字段说明、报错信息、系统提示词、代理间指令、状态报告，以及画面、场景、空间布局、物体关系、分镜、镜头和视觉生成提示词。用户级启用后，这是起草这类中文的默认行为，不必等用户点名。改写请求的触发词：改写以消除歧义、简化中文、STE 中文改写、受控中文改写、把这段中文改写到代理不会误读、把场景关系写清楚。不替用户创作风格、情节或审美；创作说明可以使用。English triggers: disambiguate Chinese text, STE rewrite Chinese, expand spatial relations, write an unambiguous scene description."
-version: 0.3.0
+license: MIT
+
+metadata:
+  version: 0.3.0
 ---
 
 # 简化技术中文：无歧义表达与结构化描述
