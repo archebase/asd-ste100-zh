@@ -6,8 +6,8 @@
 |---|---|
 | Skill id | `asd-ste100-zh` |
 | Version | `0.3.0` |
-| License | `Internal` |
-| Status | 内部技能（frontmatter `license: Internal`），`SKILL.md` 版本 `0.3.0` |
+| License | `MIT`（仓库根 `LICENSE`） |
+| Status | 内部技能（`SKILL.md` frontmatter 未声明 `license` 字段），`SKILL.md` 版本 `0.3.0` |
 | Repository | `https://github.com/archebase/asd-ste100-zh.git` |
 
 ## Scope
@@ -106,4 +106,4 @@ copies or substantial portions of the Software.
 
 - 上游：本技能是 [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) 的中文适配版（MIT）。
 - 标准来源：ASD-STE100 第 9 期（2025 年 1 月），<https://www.asd-ste100.org/>。`SKILL.md` 记录：第 9 期第 2 页声明未经 ASD 官员书面授权不得全部或部分复制或出版，只对八类列出机构授予免费复制权；本项目不在其列，因此约 900 词批准词典不进入本仓库。
-- `SKILL.md` frontmatter 写 `license: Internal`，与 `LICENSE` 的 MIT 不一致；此表与本节按原文并列，不作统一。
+- `SKILL.md` frontmatter 只有 `name`、`description`、`version` 三个键，没有 `license` 字段；本仓库的许可全部由 `LICENSE` 给出（MIT），两者不冲突。
