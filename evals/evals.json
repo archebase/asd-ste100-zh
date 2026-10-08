@@ -1,0 +1,83 @@
+{
+  "skill_name": "asd-ste100-zh",
+  "status": "planned",
+  "note": "本文件的用例把 evals/ 已有的两层评测写成目录门禁认得的形状：可读成功标准（expected_output）与可核对断言（assertions）。第 1+2 层是离线确定性检查（run_eval.py，不调用模型，语料 corpus.jsonl，当前结果 召回 14/14、清洁 8/8、金标属性 9/9、语义夹具 2/2、exit 0）；第 3 层模型在环的实测数字在 bench-report.json（meaning 4/9、hedge 5/9、format 5/9、三项全过 3/9），引用时不得四舍五入成“通过”。",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "检查这句话：“面板被移除;拉起任务。”",
+      "expected_output": "逐条指出命中的规则并给出改写：无执行者的被字句（passive-voice）、分号连句（semicolon）、短语动词（phrasal-verb）；改写后句子有执行者、无分号、用平实动词。",
+      "files": ["evals/corpus.jsonl"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 的 positive 层召回 14/14：每条标注规则至少命中一次",
+        "对 semi-01 这类文本，passive-voice / semicolon / phrasal-verb 三条标注规则各至少命中一次",
+        "输出精确到违反的规则与修复方式，而不是只给一版改写"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这三句合规吗：“代理删除文件。检查配置。任务完成。”",
+      "expected_output": "判定合零发现，不改写；不因为“简短”或“没有主语”而误报，也不把受保护的 hedging（如“可能已失败”）和防误报词（如“显示器”“代理”）判成违规。",
+      "files": ["evals/corpus.jsonl"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 的 negative 层清洁 8/8：合规文本零发现",
+        "回答不以“看起来更正式”为理由改写合规文本"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "把这句话改成合规的技术中文：“处理您的请求时可能发生了错误,原因或许是预期数据格式存在潜在不匹配,而这可能由过期的客户端版本所导致。”",
+      "expected_output": "改写自身必须过 linter（硬性违规 0）；拆成短句、去名词化与营销词，同时保留原文的不确定性——hedges_before（“可能发生了”“或许”“可能由”）在改写后有同族表达（如“可能已失败”“可能是”“会导致”），不得升级成确定断言，也不得凭空新增原文没有的断言。",
+      "files": ["evals/corpus.jsonl"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 的 pair 层属性 9/9：改写后硬性违规数等于 expect_hard（此处 0）",
+        "hedges_before 的每个 hedge 在改写后有同族表达（HEDGE_FAMILY 允许形态变化）",
+        "hedges_after 列出的表达必须在场：防止无中生有的强断言",
+        "字数变化只记录不判分（本技能目标是消除歧义，不是压缩）"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "把这句话拆开写清楚：“桌子旁边有个箱子,箱子后面有盏灯。”",
+      "expected_output": "拆成两句并显式化参照关系；不发明方向与距离——写“具体方向和距离未指定”，而不是自行决定灯在桌上、墙上或画面左侧。",
+      "files": ["evals/corpus.jsonl"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 的 semantic-expansion 层 2/2：实体保留、不发明方向、参照显式",
+        "场景与空间关系文本不得出现未指定的方向/距离/位置结论"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "这个技能现在的规则检查器还准吗，跑一遍离线评测。",
+      "expected_output": "跑 `python3 evals/run_eval.py` 并报告四层结果：召回 14/14、清洁 8/8、金标属性 9/9、语义展开夹具 2/2，退出码 0；需要结构化输出时用 `--json`。",
+      "files": ["evals/corpus.jsonl", "evals/run_eval.py"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 退出码 0",
+        "报告的分子分母与脚本输出一致，不改写成“全部通过”而不给数字",
+        "评测本身不联网、不调用模型（该层是确定性检查）"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "拿一个真实模型跑一遍改写，效果怎么样？",
+      "expected_output": "走第 3 层（`evals/run_bench.py`，模型在环 + judge），引用 bench-report.json 里已记录的实测数字：meaning 4/9、hedge 5/9、format 5/9、三项全过 3/9；说明这是历史一次运行的结果，不把它当成当前模型的通过率。",
+      "files": ["evals/bench-report.json", "evals/run_bench.py"],
+      "assertions": [
+        "引用具体分子分母（4/9、5/9、5/9、3/9），不四舍五入成“通过”",
+        "不新增未跑过的 run，也不把离线层的 14/14 当作模型质量",
+        "明确标注这是已记录的运行结果，而非本次会话的实测"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "评测里中文长句总是被误判成一句，怎么回事？",
+      "expected_output": "切句不得沿用英文的“句末标点 + 空白”规则：中文句号后没有空格，必须用零宽断言切分；修好后 pair-01..04 与 pair-10 全部通过（这是本仓评测已经抓到过的真 bug）。",
+      "files": ["evals/run_eval.py", "evals/corpus.jsonl"],
+      "assertions": [
+        "`python3 evals/run_eval.py` 通过 pair-01..04 与 pair-10（切句回归）",
+        "切句实现不依赖句末标点后的空白字符",
+        "修复后给出复现命令，而不是只说“已修复”"
+      ]
+    }
+  ]
+}
